@@ -72,94 +72,94 @@
                 $('document').ready(function() {
                     var container = $(
                         "<div class='stw-audio-player-container'>" +
-                            "<audio crossorigin><source src=" + self.src + " type='audio/mpeg'></audio>" +
-                            "<div class='content-left'>" +
-                               "<img src='http://placekitten.com/1920/1120' alt='' class='image' />" +
-                            "</div>" +
-                            "<div class='content-right'>" +
-                                "<div class='content-top'>" +
-                                    "<div class='content-top-left'>" +
-                                        "<div>" +
-                                            "<div class='support-the-artist-message'>" + self.message + "</div>" +
-                                            "<div class='song-name'>" + self.songName + "</div>" +
-                                            "<div class='song-by'>By " + self.by + "</div>" +
-                                        "</div>" +
-                                    "</div>" +
-                                    "<div class='content-top-right'>" +
-                                        "<div class='support-stats'>" +
-                                            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                                            "<svg width=\"8px\" height=\"6px\" viewBox=\"0 0 8 6\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
-                                            "    <!-- Generator: Sketch 49.2 (51160) - http://www.bohemiancoding.com/sketch -->\n" +
-                                            "    <title>Path 2</title>\n" +
-                                            "    <desc>Created with Sketch.</desc>\n" +
-                                            "    <defs></defs>\n" +
-                                            "    <g id=\"Symbols\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n" +
-                                            "        <g id=\"social-buttons/mobile\" transform=\"translate(-50.000000, -6.000000)\" stroke=\"#333\">\n" +
-                                            "            <polyline id=\"Path-2\" points=\"50.5108007 11 54.3266763 7.18412438 57.9275884 10.7850365\"></polyline>\n" +
-                                            "        </g>\n" +
-                                            "    </g>\n" +
-                                            "</svg> " +
-                                            "<div class='num-supporters'>0</div>&nbsp; | $<span class='dollar-value'>0.00</span></div>" +
-                                            "<div class='support'>Support</div>" +
-                                            "<div class='back'>Back</div>" +
-                                            "<div class='tw-link'>TW</div>" +
-                                        "</div>" +
-                                "</div>" +
-                                "<div class='content-bottom-support'>" +
-                                    "<div class='support-label'>Stellar (XLM) Address: <span class='learn'>Learn</span></div><div class='address-value copyable-area'>" + self.address + "</div>" +
-                                    "<div class='support-label'>Memo:</div><div class='memo-value copyable-area'>" + self.memo + "</div>" +
-                                "</div>" +
-                                "<div class='content-bottom'>" +
-                                "<div class='loading'>" +
-                                    "<div class='spinner'></div>" +
-                                "</div>" +
-                                "<div class='play-pause-btn'>" +
-                                        "<svg xmlns='http://www.w3.org/2000/svg' width='18' height='24' viewBox='0 0 18 24'>" +
-                                            "<path fill='#566574' fill-rule='evenodd' d='M18 12L0 24V0' class='play-pause-icon playPause'/>" +
-                                        "</svg>" +
-                                    "</div>" +
-                                    "<div class='song-name-and-slider'>" +
-                                        "<div>3. Hidden Live</div>" +
-                                        "<div class='slider-container'></div>" +
-                                    "</div>" +
-                                    "<div class='time-and-forward-backward'>" +
-                                        "<div>" +
-                                            "<span class='current-time'>0:00</span> / " +
-                                            "<span class='total-time'>0:00</span>" +
-                                        "</div>" +
-                                        "<div class='forward-backward-btns'>" +
-                                            "<div class='backward'>" +
-                                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                                                "<svg width=\"20px\" height=\"30px\" viewBox=\"0 0 56 30\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
-                                                "    <title>Group</title>\n" +
-                                                "    <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n" +
-                                                "        <g id=\"Group\" fill=\"#888888\">\n" +
-                                                "            <rect id=\"Rectangle-8\" x=\"0\" y=\"0\" width=\"6\" height=\"30\"></rect>\n" +
-                                                "            <polygon id=\"Triangle\" transform=\"translate(18.000000, 15.000000) rotate(270.000000) translate(-18.000000, -15.000000) \" points=\"18 2 33 28 3 28\"></polygon>\n" +
-                                                "            <polygon id=\"Triangle\" transform=\"translate(43.000000, 15.000000) rotate(270.000000) translate(-43.000000, -15.000000) \" points=\"43 2 58 28 28 28\"></polygon>\n" +
-                                                "        </g>\n" +
-                                                "    </g>\n" +
-                                                "</svg>" +
-                                            "</div>" +
-                                            "<div class='forward'>" +
-                                                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                                                "<svg width=\"20px\" height=\"30px\" viewBox=\"0 0 56 30\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
-                                                "    <title>Group</title>\n" +
-                                                "    <desc>Created with Sketch.</desc>\n" +
-                                                "    <defs></defs>\n" +
-                                                "    <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n" +
-                                                "        <g id=\"Group\" fill=\"#888888\">\n" +
-                                                "            <rect id=\"Rectangle-8\" x=\"0\" y=\"0\" width=\"6\" height=\"30\"></rect>\n" +
-                                                "            <polygon id=\"Triangle\" transform=\"translate(18.000000, 15.000000) rotate(270.000000) translate(-18.000000, -15.000000) \" points=\"18 2 33 28 3 28\"></polygon>\n" +
-                                                "            <polygon id=\"Triangle\" transform=\"translate(43.000000, 15.000000) rotate(270.000000) translate(-43.000000, -15.000000) \" points=\"43 2 58 28 28 28\"></polygon>\n" +
-                                                "        </g>\n" +
-                                                "    </g>\n" +
-                                                "</svg>" +
-                                            "</div>" +
-                                        "</div>" +
-                                    "</div>" +
-                                "</div>" +
-                            "</div>" +
+                        "<audio crossorigin><source src=" + self.src + " type='audio/mpeg'></audio>" +
+                        "<div class='content-left'>" +
+                        "<img src='http://placekitten.com/1920/1120' alt='' class='image' />" +
+                        "</div>" +
+                        "<div class='content-right'>" +
+                        "<div class='content-top'>" +
+                        "<div class='content-top-left'>" +
+                        "<div>" +
+                        "<div class='support-the-artist-message'>" + self.message + "</div>" +
+                        "<div class='song-name'>" + self.songName + "</div>" +
+                        "<div class='song-by'>By " + self.by + "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<div class='content-top-right'>" +
+                        "<div class='support-stats'>" +
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                        "<svg width=\"8px\" height=\"6px\" viewBox=\"0 0 8 6\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
+                        "    <!-- Generator: Sketch 49.2 (51160) - http://www.bohemiancoding.com/sketch -->\n" +
+                        "    <title>Path 2</title>\n" +
+                        "    <desc>Created with Sketch.</desc>\n" +
+                        "    <defs></defs>\n" +
+                        "    <g id=\"Symbols\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n" +
+                        "        <g id=\"social-buttons/mobile\" transform=\"translate(-50.000000, -6.000000)\" stroke=\"#333\">\n" +
+                        "            <polyline id=\"Path-2\" points=\"50.5108007 11 54.3266763 7.18412438 57.9275884 10.7850365\"></polyline>\n" +
+                        "        </g>\n" +
+                        "    </g>\n" +
+                        "</svg> " +
+                        "<div class='num-supporters'>0</div>&nbsp; | $<span class='dollar-value'>0.00</span></div>" +
+                        "<div class='support'>Support</div>" +
+                        "<div class='back'>Back</div>" +
+                        "<div class='tw-link'>TW</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<div class='content-bottom-support'>" +
+                        "<div class='support-label'>Stellar (XLM) Address: <span class='learn'>Learn</span></div><div class='address-value copyable-area'>" + self.address + "</div>" +
+                        "<div class='support-label'>Memo:</div><div class='memo-value copyable-area'>" + self.memo + "</div>" +
+                        "</div>" +
+                        "<div class='content-bottom'>" +
+                        "<div class='loading'>" +
+                        "<div class='spinner'></div>" +
+                        "</div>" +
+                        "<div class='play-pause-btn'>" +
+                        "<svg xmlns='http://www.w3.org/2000/svg' width='18' height='24' viewBox='0 0 18 24'>" +
+                        "<path fill='#566574' fill-rule='evenodd' d='M18 12L0 24V0' class='play-pause-icon playPause'/>" +
+                        "</svg>" +
+                        "</div>" +
+                        "<div class='song-name-and-slider'>" +
+                        "<div>3. Hidden Live</div>" +
+                        "<div class='slider-container'></div>" +
+                        "</div>" +
+                        "<div class='time-and-forward-backward'>" +
+                        "<div>" +
+                        "<span class='current-time'>0:00</span> / " +
+                        "<span class='total-time'>0:00</span>" +
+                        "</div>" +
+                        "<div class='forward-backward-btns'>" +
+                        "<div class='backward'>" +
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                        "<svg width=\"20px\" height=\"30px\" viewBox=\"0 0 56 30\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
+                        "    <title>Group</title>\n" +
+                        "    <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n" +
+                        "        <g id=\"Group\" fill=\"#888888\">\n" +
+                        "            <rect id=\"Rectangle-8\" x=\"0\" y=\"0\" width=\"6\" height=\"30\"></rect>\n" +
+                        "            <polygon id=\"Triangle\" transform=\"translate(18.000000, 15.000000) rotate(270.000000) translate(-18.000000, -15.000000) \" points=\"18 2 33 28 3 28\"></polygon>\n" +
+                        "            <polygon id=\"Triangle\" transform=\"translate(43.000000, 15.000000) rotate(270.000000) translate(-43.000000, -15.000000) \" points=\"43 2 58 28 28 28\"></polygon>\n" +
+                        "        </g>\n" +
+                        "    </g>\n" +
+                        "</svg>" +
+                        "</div>" +
+                        "<div class='forward'>" +
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                        "<svg width=\"20px\" height=\"30px\" viewBox=\"0 0 56 30\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
+                        "    <title>Group</title>\n" +
+                        "    <desc>Created with Sketch.</desc>\n" +
+                        "    <defs></defs>\n" +
+                        "    <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n" +
+                        "        <g id=\"Group\" fill=\"#888888\">\n" +
+                        "            <rect id=\"Rectangle-8\" x=\"0\" y=\"0\" width=\"6\" height=\"30\"></rect>\n" +
+                        "            <polygon id=\"Triangle\" transform=\"translate(18.000000, 15.000000) rotate(270.000000) translate(-18.000000, -15.000000) \" points=\"18 2 33 28 3 28\"></polygon>\n" +
+                        "            <polygon id=\"Triangle\" transform=\"translate(43.000000, 15.000000) rotate(270.000000) translate(-43.000000, -15.000000) \" points=\"43 2 58 28 28 28\"></polygon>\n" +
+                        "        </g>\n" +
+                        "    </g>\n" +
+                        "</svg>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
                         "</div>"
                     );
                     const idTarget = self.idTarget;
@@ -330,7 +330,7 @@
             });
 
             $(`${self.idTarget} .stw-audio-player-container .support-stats`).css({
-               'color': '#333',
+                'color': '#333',
                 'margin-right': '0.5em',
                 'display': 'inline-flex',
                 'align-items': 'baseline'
@@ -683,5 +683,6 @@
     } else if (typeof global !== 'undefined') { // Add to global in Node.js (for testing, etc).
         global.AudioPlayer = AudioPlayer;
     }
+
 
 })();

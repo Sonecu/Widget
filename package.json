@@ -1,11 +1,8 @@
 {
   "name": "toneco-widget",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Audio player widget with cryptocurrency payment support.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "src/widget.core.js",
   "keywords": [
     "cryptocurrency",
     "audio",
@@ -13,8 +10,5 @@
     "toneco"
   ],
   "author": "Alexander Leon",
-  "license": "ISC",
-  "devDependencies": {
-    "uglify-js": "^3.3.23"
-  }
+  "license": "ISC"
 }
