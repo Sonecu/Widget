@@ -10,14 +10,21 @@
 
         init: function(o) {
             var self = this;
+            if (!o.idTarget) {
+                throw ('missing idTarget. Please consult the documentation.');
+            }
+            if (!o.src) {
+                throw ('missing src. Please consult the documentation.');
+            }
             self.idTarget = '#'.concat(o.idTarget);
             self.src = o.src;
-            self.by = o.by;
-            self.memo = o.memo;
-            self.message = o.message;
-            self.address = o.address;
-            self.isClassical = o.isClassical;
-            self.songName = o.songName;
+            self.imageSrc = o.imageSrc || 'http://placekitten.com/1920/1120';
+            self.by = o.by || '';
+            self.memo = o.memo || 'Missing memo';
+            self.message = o.message || 'Thanks for the support!';
+            self.address = o.address || 'Address missing';
+            self.songName = o.songName || '';
+            self.albumName = o.albumName || '';
 
             self._memoCounter = self._memoCounter.bind(this);
 
@@ -74,14 +81,14 @@
                         "<div class='stw-audio-player-container'>" +
                         "<audio crossorigin><source src=" + self.src + " type='audio/mpeg'></audio>" +
                         "<div class='content-left'>" +
-                        "<img src='http://placekitten.com/1920/1120' alt='' class='image' />" +
+                        "<img src='" + self.imageSrc + "' alt='' class='image' />" +
                         "</div>" +
                         "<div class='content-right'>" +
                         "<div class='content-top'>" +
                         "<div class='content-top-left'>" +
                         "<div>" +
                         "<div class='support-the-artist-message'>" + self.message + "</div>" +
-                        "<div class='song-name'>" + self.songName + "</div>" +
+                        "<div class='song-name'>" + self.albumName + "</div>" +
                         "<div class='song-by'>By " + self.by + "</div>" +
                         "</div>" +
                         "</div>" +
@@ -119,7 +126,7 @@
                         "</svg>" +
                         "</div>" +
                         "<div class='song-name-and-slider'>" +
-                        "<div>3. Hidden Live</div>" +
+                        "<div>1. " + self.songName + "</div>" +
                         "<div class='slider-container'></div>" +
                         "</div>" +
                         "<div class='time-and-forward-backward'>" +
@@ -683,6 +690,5 @@
     } else if (typeof global !== 'undefined') { // Add to global in Node.js (for testing, etc).
         global.AudioPlayer = AudioPlayer;
     }
-
 
 })();
