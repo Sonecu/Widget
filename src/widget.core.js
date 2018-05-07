@@ -630,14 +630,6 @@
 
         },
 
-        pauseAll: function() {
-            var self = this;
-            if (!self.player.paused) {
-                console.log(self, 'self..   ')
-                //  self.player.pause();
-            }
-        },
-
         togglePlay: function() {
             var self = this;
             if(self.player.paused) {
