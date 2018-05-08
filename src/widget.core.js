@@ -26,22 +26,13 @@
             self.albumName = o.albumName || '';
             self.type = o.type;
             self.activeTrackIndex = 0;
-
-            self._memoCounter = self._memoCounter.bind(self);
+            self.numTracks = o.tracks.length;
 
             self._setHtml().then(function() {
                 self._setCss();
                 self._setJs();
                 self._fetchStellarData()
             });
-        },
-
-        _memoCounter: function(records) {
-            var self = this;
-            console.log(self, 'self');
-            return records.filter(function(record) {
-                return record.memo === self.memo
-            }).length;
         },
 
         _fetchStellarData: function() {
@@ -126,8 +117,8 @@
                         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                         "<svg width=\"20px\" height=\"30px\" viewBox=\"0 0 56 30\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
                         "    <title>Group</title>\n" +
-                        "    <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n" +
-                        "        <g id=\"Group\" fill=\"#888888\">\n" +
+                        "    <g stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n" +
+                        "        <g class='backward-content' fill='" + self._backArrowColor() + "'>\n" +
                         "            <rect id=\"Rectangle-8\" x=\"0\" y=\"0\" width=\"6\" height=\"30\"></rect>\n" +
                         "            <polygon id=\"Triangle\" transform=\"translate(18.000000, 15.000000) rotate(270.000000) translate(-18.000000, -15.000000) \" points=\"18 2 33 28 3 28\"></polygon>\n" +
                         "            <polygon id=\"Triangle\" transform=\"translate(43.000000, 15.000000) rotate(270.000000) translate(-43.000000, -15.000000) \" points=\"43 2 58 28 28 28\"></polygon>\n" +
@@ -138,11 +129,8 @@
                         "<div class='forward'>" +
                         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                         "<svg width=\"20px\" height=\"30px\" viewBox=\"0 0 56 30\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
-                        "    <title>Group</title>\n" +
-                        "    <desc>Created with Sketch.</desc>\n" +
-                        "    <defs></defs>\n" +
-                        "    <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n" +
-                        "        <g id=\"Group\" fill=\"#888888\">\n" +
+                        "    <g stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n" +
+                        "        <g class='forward-content' fill='" + self._forwardArrowColor() + "'>" +
                         "            <rect id=\"Rectangle-8\" x=\"0\" y=\"0\" width=\"6\" height=\"30\"></rect>\n" +
                         "            <polygon id=\"Triangle\" transform=\"translate(18.000000, 15.000000) rotate(270.000000) translate(-18.000000, -15.000000) \" points=\"18 2 33 28 3 28\"></polygon>\n" +
                         "            <polygon id=\"Triangle\" transform=\"translate(43.000000, 15.000000) rotate(270.000000) translate(-43.000000, -15.000000) \" points=\"43 2 58 28 28 28\"></polygon>\n" +
@@ -163,6 +151,24 @@
                     resolve(null);
                 });
             })
+        },
+
+        _hasTracksGoingForward: function() {
+            return this.activeTrackIndex < (this.numTracks - 1);
+        },
+
+        _hasTracksGoingBackward: function() {
+            return this.activeTrackIndex > 0;
+        },
+
+        _backArrowColor: function() {
+            var self = this;
+            return self._hasTracksGoingBackward() ? '#333' : '#888';
+        },
+
+        _forwardArrowColor: function() {
+            var self = this;
+            return self._hasTracksGoingForward() ? '#333' : '#888';
         },
 
         _songOptions: function() {
@@ -626,6 +632,21 @@
             self.updateProgress = self.updateProgress.bind(self);
             self.makePlay = self.makePlay.bind(self);
 
+            if (self.numTracks > 1) {
+                $(`${self.idTarget} .forward`).css({'cursor': 'pointer'})
+            }
+            $(`${self.idTarget} .forward`).on('click', function() {
+                if (self._hasTracksGoingForward()) {
+                    self.miniPlayPauseBtns[self.activeTrackIndex + 1].click();
+                }
+            });
+
+            $(`${self.idTarget} .backward`).on('click', function() {
+                if (self._hasTracksGoingBackward()) {
+                    self.miniPlayPauseBtns[self.activeTrackIndex - 1].click();
+                }
+            });
+
             $(`${self.idTarget} .mini-play-pause-btn`).on('click', function(e) {
                 let node = e.target;
                 if (!e.target.attributes.index) {
@@ -642,6 +663,23 @@
                     self.activeTrackIndex = newTrackIndex;
                 }
                 self.playpauseBtn.click();
+
+                // DUPLICATE CODE:
+                if (!(self.numTracks > self.activeTrackIndex + 1)) {
+                    setTimeout(function() {
+                        // TODO: Figure out why not updating on the original stack.
+                        $(`${self.idTarget} .forward-content`).css({'fill': '#888', 'cursor': 'initial'});
+                        $(`${self.idTarget} .backward-content`).css({'fill': '#333', 'cursor': 'pointer'});
+                    }, 0)
+                }
+                if (self.activeTrackIndex - 1 < 0) {
+                    console.log(self.activeTrackIndex, 'active..')
+                    setTimeout(function() {
+                      $(`${self.idTarget} .backward-content`).css({'fill': '#888', 'cursor': 'initial'});
+                      $(`${self.idTarget} .forward-content`).css({'fill': '#333', 'cursor': 'pointer'});
+                    }, 0);
+                }
+
             });
             // self.allPlayPauseBtns.addEventListener('click', self.pauseAll)
             self.playpauseBtn.addEventListener('click', self.togglePlay);
@@ -658,7 +696,6 @@
             if (self.tracks.length > 1) {
                 self.miniPlayPauseBtns = self.audioPlayer.querySelectorAll('.mini-play-pause-btn');
             }
-
 
             self.tipBtn.addEventListener('click', function() {
                 $(`${self.idTarget} .stw-audio-player-container .album-name`).css('display', 'none');
@@ -689,17 +726,22 @@
 
         togglePlay: function() {
             var self = this;
+            const pauseIcon = 'M18 12L0 24V0';
             if(self.player.paused) {
                 const val = 'M0 0h6v24H0zM12 0h6v24h-6z';
                 self.playPause.attributes.d.value = val;
                 self.player.play();
                 // self.miniPlayPauseBtns[self.activeTrackIndex].target.attributes.d.value = val;
                 self.miniPlayPauseBtns[self.activeTrackIndex].children[0].children[0].attributes.d.value = val;
+                self.miniPlayPauseBtns.forEach(function(btn, index) {
+                    if (index !== self.activeTrackIndex) {
+                        btn.children[0].children[0].attributes.d.value = pauseIcon;
+                    }
+                })
             } else {
-                const val = 'M18 12L0 24V0';
-                self.playPause.attributes.d.value = val;
+                self.playPause.attributes.d.value = pauseIcon;
                 self.player.pause();
-                self.miniPlayPauseBtns[self.activeTrackIndex].children[0].children[0].attributes.d.value = val;
+                self.miniPlayPauseBtns[self.activeTrackIndex].children[0].children[0].attributes.d.value = pauseIcon;
             }
         },
 
@@ -726,7 +768,6 @@
         },
 
     };
-
 
     if (typeof define === 'function' && define.amd) {
         define([], function() {
