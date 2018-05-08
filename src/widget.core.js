@@ -16,13 +16,29 @@
             if (!o.tracks || !o.tracks.length) {
                 throw ('missing tracks. Please consult the documentation.');
             }
+            if (o.federatedAddress && o.walletAddress) {
+                throw ('You listed both federatedAddress and walletAddress. Please choose one or the other.');
+            }
+            if (o.federatedAddress) {
+                if (/.*\*.*/.test(o.federatedAddress)) {
+                    self.address = o.federatedAddress;
+                    self.usingFederatedAddress = true;
+                } else {
+                    throw ('invalid federatedServerAddress. Please consult the documentation.')
+                }
+            } else {
+                if (!o.walletAddress) {
+                    throw ('Missing walletAddress. Please consult the documentation.')
+                }
+                self.address = o.walletAddress || 'Address missing';
+            }
+
             self.idTarget = '#'.concat(o.idTarget);
             self.tracks = o.tracks;
             self.imageSrc = o.imageSrc || 'http://placekitten.com/1920/1120';
             self.by = o.by || '';
             self.memo = o.memo || 'Missing memo';
             self.message = o.message || 'Thanks for the support!';
-            self.address = o.address || 'Address missing';
             self.albumName = o.albumName || '';
             self.useAlbumDisplay = o.useAlbumDisplay || false;
             self.activeTrackIndex = 0;
@@ -92,7 +108,7 @@
                         "</div>" +
                         "<div class='content-bottom-support'>" +
                         "<div class='support-label'>Stellar (XLM) Address: <span class='learn'>Learn</span></div><div class='address-value copyable-area'>" + self.address + "</div>" +
-                        "<div class='support-label'>Memo:</div><div class='memo-value copyable-area'>" + self.memo + "</div>" +
+                        self._memoHtml() +
                         "</div>" +
                         "<div class='content-bottom'>" +
                         "<div class='loading'>" +
@@ -151,6 +167,11 @@
                     resolve(null);
                 });
             })
+        },
+
+        _memoHtml: function() {
+            var self = this;
+            return self.usingFederatedAddress ? '' : "<div class='support-label'>Memo:</div><div class='memo-value copyable-area'>" + self.memo + "</div>";
         },
 
         _hasTracksGoingForward: function() {
@@ -315,7 +336,10 @@
                 'font-size': '0.8em',
                 'color': '#333',
                 'display': 'none',
+                'flex-direction': 'column',
+                'justify-content': 'center',
                 'margin-left': '0.8em',
+                'margin-right': '0.8em'
             });
 
             $(`${self.idTarget} .stw-audio-player-container .support-label`).css({
@@ -725,7 +749,7 @@
                 $(`${self.idTarget} .stw-audio-player-container .support-stats`).css('display', 'none');
 
                 $(`${self.idTarget} .stw-audio-player-container .back`).css('display', 'table');
-                $(`${self.idTarget} .stw-audio-player-container .content-bottom-support`).css('display', 'block');
+                $(`${self.idTarget} .stw-audio-player-container .content-bottom-support`).css('display', 'inline-flex');
                 $(`${self.idTarget} .stw-audio-player-container .support-the-artist-message`).css('display', 'block');
             });
             self.backBtn.addEventListener('click', function() {
