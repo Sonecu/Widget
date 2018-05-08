@@ -35,8 +35,7 @@ new AudioPlayer(
         useAlbumDisplay: true,
         songName: 'Castillo en la niebla',
         by: 'Alexander Leon',
-        walletAddress: 'GA5JWS65L22GL5EJROI7NDRPJUPY4TFEKSRDPO2DKLA7MJXRJSTDNKRN',
-        memo: 'f',
+        walletAddress: 'test@music*lumenbox.org',
         albumName: 'Castillo en la niebla (2016)',
         idTarget: 'dawg',
         message: 'Thanks!'

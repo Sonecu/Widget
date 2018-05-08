@@ -30,14 +30,19 @@
                 if (!o.walletAddress) {
                     throw ('Missing walletAddress. Please consult the documentation.')
                 }
-                self.address = o.walletAddress || 'Address missing';
+                self.address = o.walletAddress;
             }
 
             self.idTarget = '#'.concat(o.idTarget);
             self.tracks = o.tracks;
             self.imageSrc = o.imageSrc || 'http://placekitten.com/1920/1120';
             self.by = o.by || '';
-            self.memo = o.memo || 'Missing memo';
+            if (o.walletAddress) {
+                if (!o.memo) {
+                    throw ('Missing memo. Please consult the documentation');
+                }
+            }
+            self.memo = o.memo;
             self.message = o.message || 'Thanks for the support!';
             self.albumName = o.albumName || '';
             self.useAlbumDisplay = o.useAlbumDisplay || false;
