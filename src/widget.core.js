@@ -347,7 +347,7 @@
                 'font-weight': '500',
                 'user-select': 'none',
                 'margin-bottom': '0.2em'
-            })
+            });
 
             $(`${self.idTarget} .stw-audio-player-container .forward-backward-btns`).css({
                 'display': 'flex'
@@ -666,6 +666,7 @@
                     } else {
                         self.activeTrackIndex += 1;
                         self.player.src = self.tracks[self.activeTrackIndex].url;
+                        $(`${self.idTarget} .song-name`).html(`${self.activeTrackIndex + 1}. ${self.tracks[self.activeTrackIndex].name}`);
                         if (!(self.numTracks > self.activeTrackIndex + 1)) {
                             $(`${self.idTarget} .forward-content`).css({'fill': '#888', 'cursor': 'initial'});
                             $(`${self.idTarget} .backward-content`).css({'fill': '#333', 'cursor': 'pointer'});
@@ -682,6 +683,7 @@
                     } else {
                         self.activeTrackIndex -= 1;
                         self.player.src = self.tracks[self.activeTrackIndex].url;
+                        $(`${self.idTarget} .song-name`).html(`${self.activeTrackIndex + 1}. ${self.tracks[self.activeTrackIndex].name}`);
                         if (self.activeTrackIndex - 1 < 0) {
                             $(`${self.idTarget} .backward-content`).css({'fill': '#888', 'cursor': 'initial'});
                             $(`${self.idTarget} .forward-content`).css({'fill': '#333', 'cursor': 'pointer'});
