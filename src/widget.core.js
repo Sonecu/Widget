@@ -24,7 +24,7 @@
             self.message = o.message || 'Thanks for the support!';
             self.address = o.address || 'Address missing';
             self.albumName = o.albumName || '';
-            self.type = o.type;
+            self.useAlbumDisplay = o.useAlbumDisplay || false;
             self.activeTrackIndex = 0;
             self.numTracks = o.tracks.length;
 
@@ -186,7 +186,7 @@
 
         _getAlbumHtml: function() {
             var self = this;
-            if (self.type === 'album') {
+            if (self.useAlbumDisplay) {
                 return "<div class='song-options'>" + self._songOptions() + "</div>";
             }
             return "<div></div>";
@@ -637,13 +637,34 @@
             }
             $(`${self.idTarget} .forward`).on('click', function() {
                 if (self._hasTracksGoingForward()) {
-                    self.miniPlayPauseBtns[self.activeTrackIndex + 1].click();
+                    if (self.useAlbumDisplay) {
+                        self.miniPlayPauseBtns[self.activeTrackIndex + 1].click();
+                    } else {
+                        self.activeTrackIndex += 1;
+                        self.player.src = self.tracks[self.activeTrackIndex].url;
+                        if (!(self.numTracks > self.activeTrackIndex + 1)) {
+                            $(`${self.idTarget} .forward-content`).css({'fill': '#888', 'cursor': 'initial'});
+                            $(`${self.idTarget} .backward-content`).css({'fill': '#333', 'cursor': 'pointer'});
+                        }
+                        self.playpauseBtn.click();
+                    }
                 }
             });
 
             $(`${self.idTarget} .backward`).on('click', function() {
                 if (self._hasTracksGoingBackward()) {
-                    self.miniPlayPauseBtns[self.activeTrackIndex - 1].click();
+                    if (self.useAlbumDisplay) {
+                        self.miniPlayPauseBtns[self.activeTrackIndex - 1].click();
+                    } else {
+                        self.activeTrackIndex -= 1;
+                        self.player.src = self.tracks[self.activeTrackIndex].url;
+                        if (self.activeTrackIndex - 1 < 0) {
+                            $(`${self.idTarget} .backward-content`).css({'fill': '#888', 'cursor': 'initial'});
+                            $(`${self.idTarget} .forward-content`).css({'fill': '#333', 'cursor': 'pointer'});
+                        }
+                        self.playpauseBtn.click();
+                    }
+
                 }
             });
 
@@ -664,7 +685,6 @@
                 }
                 self.playpauseBtn.click();
 
-                // DUPLICATE CODE:
                 if (!(self.numTracks > self.activeTrackIndex + 1)) {
                     setTimeout(function() {
                         // TODO: Figure out why not updating on the original stack.
@@ -673,7 +693,6 @@
                     }, 0)
                 }
                 if (self.activeTrackIndex - 1 < 0) {
-                    console.log(self.activeTrackIndex, 'active..')
                     setTimeout(function() {
                       $(`${self.idTarget} .backward-content`).css({'fill': '#888', 'cursor': 'initial'});
                       $(`${self.idTarget} .forward-content`).css({'fill': '#333', 'cursor': 'pointer'});
@@ -731,17 +750,20 @@
                 const val = 'M0 0h6v24H0zM12 0h6v24h-6z';
                 self.playPause.attributes.d.value = val;
                 self.player.play();
-                // self.miniPlayPauseBtns[self.activeTrackIndex].target.attributes.d.value = val;
-                self.miniPlayPauseBtns[self.activeTrackIndex].children[0].children[0].attributes.d.value = val;
-                self.miniPlayPauseBtns.forEach(function(btn, index) {
-                    if (index !== self.activeTrackIndex) {
-                        btn.children[0].children[0].attributes.d.value = pauseIcon;
-                    }
-                })
+                if (self.useAlbumDisplay) {
+                    self.miniPlayPauseBtns[self.activeTrackIndex].children[0].children[0].attributes.d.value = val;
+                    self.miniPlayPauseBtns.forEach(function(btn, index) {
+                        if (index !== self.activeTrackIndex) {
+                            btn.children[0].children[0].attributes.d.value = pauseIcon;
+                        }
+                    })
+                }
             } else {
                 self.playPause.attributes.d.value = pauseIcon;
                 self.player.pause();
-                self.miniPlayPauseBtns[self.activeTrackIndex].children[0].children[0].attributes.d.value = pauseIcon;
+                if (self.useAlbumDisplay) {
+                    self.miniPlayPauseBtns[self.activeTrackIndex].children[0].children[0].attributes.d.value = pauseIcon;
+                }
             }
         },
 
