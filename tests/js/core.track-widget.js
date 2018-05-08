@@ -1,18 +1,33 @@
 new AudioPlayer(
     {
-        src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/355309/Swing_Jazz_Drum.mp3',
+        tracks: [
+            {
+                url: 'https://dl.dropbox.com/s/cv0gaegc6smd642/fantasia_TMP.mp3?dl=0',
+                name: 'Castillo en la niebla'
+            },
+            {
+                url: 'https://dl.dropbox.com/s/qf1l478n8awdapu/pavilions.mp3?dl=0',
+                name: 'Dawggss'
+            }
+        ],
         songName: 'Castillo en la niebla',
         by: 'Alexander Leon',
         address: 'GA5JWS65L22GL5EJROI7NDRPJUPY4TFEKSRDPO2DKLA7MJXRJSTDNKRN',
         memo: 'f',
         idTarget: 'hello',
         albumName: 'Castillo en la niebla (2016)',
-        message: 'Thanks!'
+        message: 'Thanks!',
+        type: 'album'
     });
 
 new AudioPlayer(
     {
-        src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/355309/Swing_Jazz_Drum.mp3',
+        tracks: [
+            {
+                url: 'https://dl.dropbox.com/s/qf1l478n8awdapu/pavilions.mp3?dl=0',
+                name: 'Castillo en la niebla'
+            }
+        ],
         songName: 'Castillo en la niebla',
         by: 'Alexander Leon',
         address: 'GA5JWS65L22GL5EJROI7NDRPJUPY4TFEKSRDPO2DKLA7MJXRJSTDNKRN',

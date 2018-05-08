@@ -13,20 +13,21 @@
             if (!o.idTarget) {
                 throw ('missing idTarget. Please consult the documentation.');
             }
-            if (!o.src) {
-                throw ('missing src. Please consult the documentation.');
+            if (!o.tracks || !o.tracks.length) {
+                throw ('missing tracks. Please consult the documentation.');
             }
             self.idTarget = '#'.concat(o.idTarget);
-            self.src = o.src;
+            self.tracks = o.tracks;
             self.imageSrc = o.imageSrc || 'http://placekitten.com/1920/1120';
             self.by = o.by || '';
             self.memo = o.memo || 'Missing memo';
             self.message = o.message || 'Thanks for the support!';
             self.address = o.address || 'Address missing';
-            self.songName = o.songName || '';
             self.albumName = o.albumName || '';
+            self.type = o.type;
+            self.activeTrackIndex = 0;
 
-            self._memoCounter = self._memoCounter.bind(this);
+            self._memoCounter = self._memoCounter.bind(self);
 
             self._setHtml().then(function() {
                 self._setCss();
@@ -41,19 +42,6 @@
             return records.filter(function(record) {
                 return record.memo === self.memo
             }).length;
-        },
-
-        _numToTextHash: function() {
-            return {
-                2: 'Two',
-                3: 'Three',
-                4: 'Four',
-                5: 'Five',
-                6: 'Six',
-                7: 'Seven',
-                8: 'Eight',
-                9: 'Nine'
-            }
         },
 
         _fetchStellarData: function() {
@@ -79,7 +67,8 @@
                 $('document').ready(function() {
                     var container = $(
                         "<div class='stw-audio-player-container'>" +
-                        "<audio crossorigin><source src=" + self.src + " type='audio/mpeg'></audio>" +
+                        "<div class='main'>" +
+                        "<audio crossorigin><source src=" + self.tracks[0].url + " type='audio/mpeg'></audio>" +
                         "<div class='content-left'>" +
                         "<img src='" + self.imageSrc + "' alt='' class='image' />" +
                         "</div>" +
@@ -88,7 +77,7 @@
                         "<div class='content-top-left'>" +
                         "<div>" +
                         "<div class='support-the-artist-message'>" + self.message + "</div>" +
-                        "<div class='song-name'>" + self.albumName + "</div>" +
+                        "<div class='album-name'>" + self.albumName + "</div>" +
                         "<div class='song-by'>By " + self.by + "</div>" +
                         "</div>" +
                         "</div>" +
@@ -96,9 +85,7 @@
                         "<div class='support-stats'>" +
                         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                         "<svg width=\"8px\" height=\"6px\" viewBox=\"0 0 8 6\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
-                        "    <!-- Generator: Sketch 49.2 (51160) - http://www.bohemiancoding.com/sketch -->\n" +
                         "    <title>Path 2</title>\n" +
-                        "    <desc>Created with Sketch.</desc>\n" +
                         "    <defs></defs>\n" +
                         "    <g id=\"Symbols\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n" +
                         "        <g id=\"social-buttons/mobile\" transform=\"translate(-50.000000, -6.000000)\" stroke=\"#333\">\n" +
@@ -126,7 +113,7 @@
                         "</svg>" +
                         "</div>" +
                         "<div class='song-name-and-slider'>" +
-                        "<div>1. " + self.songName + "</div>" +
+                        "<div class='song-name'>1. " + self.tracks[0].name + "</div>" +
                         "<div class='slider-container'></div>" +
                         "</div>" +
                         "<div class='time-and-forward-backward'>" +
@@ -167,6 +154,8 @@
                         "</div>" +
                         "</div>" +
                         "</div>" +
+                        "</div>" +
+                        self._getAlbumHtml() +
                         "</div>"
                     );
                     const idTarget = self.idTarget;
@@ -176,22 +165,46 @@
             })
         },
 
+        _songOptions: function() {
+            var self = this;
+            var songOptions = '';
+            let className;
+            for (var i = 0; i < self.tracks.length; i++) {
+                songOptions += '<div class="song-option-container"><div index="' + i + '" title="' + self.tracks[i].name + '" value="' + self.tracks[i].url + '" class="mini-play-pause-btn">' + "<svg xmlns='http://www.w3.org/2000/svg' width='8' height='18' viewBox='0 0 18 24'>" +
+                    "<path fill='#566574' fill-rule='evenodd' d='M18 12L0 24V0' class='play-pause-icon-mini playPauseMini'/>" +
+                    "</svg>" +
+                    "</div>" + '<div index="' + i + '" title="' + self.tracks[i].name + '" value="' + self.tracks[i].url + '" class="song-option">' + (i + 1) + '. ' + self.tracks[i].name + '</div></div>'
+            }
+            return songOptions;
+        },
+
+        _getAlbumHtml: function() {
+            var self = this;
+            if (self.type === 'album') {
+                return "<div class='song-options'>" + self._songOptions() + "</div>";
+            }
+            return "<div></div>";
+        },
+
         _setCss: function() {
             var self = this;
-
-
 
             $(`${self.idTarget} .stw-audio-player-container`).css({
                 'font-family' : 'Roboto, sans-serif',
                 'border': '1px solid #c7c7c7',
                 'max-width' : '40em',
                 'min-width': '31em',
-                'height' : '6.4em',
                 'line-height': '1',
-                'display': 'flex',
                 'box-shadow' : '0 4px 16px 0 rgba(0, 0, 0, .07)',
                 'background-color' : '#fff',
                 'text-align': 'left'
+            });
+
+            $(`${self.idTarget} .stw-audio-player-container .main`).css({
+                'width': '100%',
+                'height' : '6.4em',
+                'line-height': '1',
+                'display': 'flex'
             });
 
             $(`${self.idTarget} .stw-audio-player-container loading`).css({
@@ -215,11 +228,26 @@
                 'object-fit' : 'cover'
             });
 
+            $(`${self.idTarget} .song-option-container`).css({
+                'display': 'flex'
+            });
+
             $(`${self.idTarget} .stw-audio-player-container .copyable-area`).css({
                 'background': '#e4e4e4',
                 'padding': '0.2em 0.6em',
                 'display': 'inline-grid',
                 'margin-bottom': '0.3em'
+            });
+
+            $(`${self.idTarget} .mini-play-pause-btn`).css({
+                'border': '1px solid rgb(217, 217, 217)',
+                'width': '1.3em',
+                'height': '1.3em',
+                'display': 'flex',
+                'align-items': 'center',
+                'justify-content': 'center',
+                'margin-right': '0.3em',
+                'cursor': 'pointer'
             });
 
             $(`${self.idTarget} .stw-audio-player-container .support-the-artist-message`).css({
@@ -228,7 +256,16 @@
                 'font-size': '0.8em',
                 'margin-bottom': '1em',
                 'font-style': 'italic'
-            })
+            });
+
+            $(`${self.idTarget} .song-options`).css({
+                'padding': '0.5em 0.7em',
+                'font-size': '0.8em',
+                'line-height': '1.6',
+                'margin': '0',
+                'color': '#333',
+                'border-top': '1px solid rgb(231, 231, 231)'
+            });
 
             $(`${self.idTarget} .stw-audio-player-container .address`).css({
                 'font-size': '14px',
@@ -394,7 +431,7 @@
             })
 
 
-            $(`${self.idTarget} .stw-audio-player-container .song-name`).css({
+            $(`${self.idTarget} .stw-audio-player-container .album-name`).css({
                 'color': '#333',
                 'font-weight': '600'
             });
@@ -556,7 +593,6 @@
 
             self.audioPlayer = document.querySelector(`${self.idTarget} .stw-audio-player-container`);
             self.playPause = self.audioPlayer.querySelector(`.playPause`);
-            self.allPlayPauseBtns = document.querySelectorAll(`.stw-audio-player-container .play-pause-btn`);
             self.playpauseBtn = self.audioPlayer.querySelector(`.play-pause-btn`);
             self.loading = self.audioPlayer.querySelector(`.loading`);
             self.progress = self.audioPlayer.querySelector(`.progress`);
@@ -585,11 +621,28 @@
                 self._addJqueryUiCss();
 
             } );
-            self.pauseAll = self.pauseAll.bind(self);
+            self._songOptions = self._songOptions.bind(self);
             self.togglePlay = self.togglePlay.bind(self);
             self.updateProgress = self.updateProgress.bind(self);
             self.makePlay = self.makePlay.bind(self);
 
+            $(`${self.idTarget} .mini-play-pause-btn`).on('click', function(e) {
+                let node = e.target;
+                if (!e.target.attributes.index) {
+                    if (e.target.parentNode.attributes.index) {
+                        node = e.target.parentNode;
+                    } else {
+                        node = e.target.parentNode.parentNode;
+                    }
+                }
+                const newTrackIndex = parseInt(node.attributes.index.value, 10)
+                if (self.activeTrackIndex !== newTrackIndex) {
+                    self.player.src = node.attributes.value.value;
+                    $(`${self.idTarget} .song-name`).html(`${parseInt(node.attributes.index.value, 10) + 1}. ${node.title}`);
+                    self.activeTrackIndex = newTrackIndex;
+                }
+                self.playpauseBtn.click();
+            });
             // self.allPlayPauseBtns.addEventListener('click', self.pauseAll)
             self.playpauseBtn.addEventListener('click', self.togglePlay);
             self.player.addEventListener('timeupdate', self.updateProgress);
@@ -602,9 +655,13 @@
                 self.player.currentTime = 0;
             });
 
+            if (self.tracks.length > 1) {
+                self.miniPlayPauseBtns = self.audioPlayer.querySelectorAll('.mini-play-pause-btn');
+            }
+
 
             self.tipBtn.addEventListener('click', function() {
-                $(`${self.idTarget} .stw-audio-player-container .song-name`).css('display', 'none');
+                $(`${self.idTarget} .stw-audio-player-container .album-name`).css('display', 'none');
                 $(`${self.idTarget} .stw-audio-player-container .song-by`).css('display', 'none');
                 $(`${self.idTarget} .stw-audio-player-container .content-bottom`).css('display', 'none');
                 $(`${self.idTarget} .stw-audio-player-container .support`).css('display', 'none');
@@ -622,7 +679,7 @@
 
                 $(`${self.idTarget} .stw-audio-player-container .support-stats`).css('display', 'inline-flex');
                 $(`${self.idTarget} .stw-audio-player-container .content-left`).css('display', 'block');
-                $(`${self.idTarget} .stw-audio-player-container .song-name`).css('display', 'block');
+                $(`${self.idTarget} .stw-audio-player-container .album-name`).css('display', 'block');
                 $(`${self.idTarget} .stw-audio-player-container .song-by`).css('display', 'block');
                 $(`${self.idTarget} .stw-audio-player-container .content-bottom`).css('display', 'inline-flex');
                 $(`${self.idTarget} .stw-audio-player-container .support`).css('display', 'table');
@@ -633,11 +690,16 @@
         togglePlay: function() {
             var self = this;
             if(self.player.paused) {
-                self.playPause.attributes.d.value = "M0 0h6v24H0zM12 0h6v24h-6z";
+                const val = 'M0 0h6v24H0zM12 0h6v24h-6z';
+                self.playPause.attributes.d.value = val;
                 self.player.play();
+                // self.miniPlayPauseBtns[self.activeTrackIndex].target.attributes.d.value = val;
+                self.miniPlayPauseBtns[self.activeTrackIndex].children[0].children[0].attributes.d.value = val;
             } else {
-                self.playPause.attributes.d.value = "M18 12L0 24V0";
+                const val = 'M18 12L0 24V0';
+                self.playPause.attributes.d.value = val;
                 self.player.pause();
+                self.miniPlayPauseBtns[self.activeTrackIndex].children[0].children[0].attributes.d.value = val;
             }
         },
 
@@ -664,6 +726,7 @@
         },
 
     };
+
 
     if (typeof define === 'function' && define.amd) {
         define([], function() {
