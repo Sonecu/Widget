@@ -1,6 +1,6 @@
 {
-  "name": "toneco-widget",
-  "version": "1.0.2",
+  "name": "sonecu-widget",
+  "version": "1.0.3",
   "description": "Audio player widget with cryptocurrency payment support.",
   "main": "src/widget.core.js",
   "keywords": [

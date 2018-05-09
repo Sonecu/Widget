@@ -4,17 +4,23 @@
 
 ```
 <script type="text/javascript">
-    new AudioPlayer(
-      {
-        src: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/355309/Swing_Jazz_Drum.mp3',
-        songName: 'Castillo en la niebla (2016)',
+  new AudioPlayer(
+    {
+        tracks: [
+            {
+                url: 'https://dl.dropbox.com/s/cv0gaegc6smd642/fantasia_tmp.mp3?dl=0',
+                name: 'castillo en la niebla'
+            }
+        ],
         by: 'Alexander Leon',
-        address: 'GA5JWS65L22GL5EJROI7NDRPJUPY4TFEKSRDPO2DKLA7MJXRJSTDNKRN',
+        walletAddress: 'GA5JWS65L22GL5EJROI7NDRPJUPY4TFEKSRDPO2DKLA7MJXRJSTDNKRN',
         memo: 'f',
-        idTarget: 'castillo'
-      })
+        albumName: 'Castillo en la niebla (2016)',
+        idTarget: 'castillo',
+        message: 'Thanks!'
+    }); 
 </script>
-<div id="castillo"></div> 
+<div id="castillo"></div>
 ```
 
 ## Core
