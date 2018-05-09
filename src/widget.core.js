@@ -16,19 +16,34 @@
             if (!o.tracks || !o.tracks.length) {
                 throw ('missing tracks. Please consult the documentation.');
             }
-            if (o.federatedAddress && o.walletAddress) {
-                throw ('You listed both federatedAddress and walletAddress. Please choose one or the other.');
+            if (o.walletAddress) {
+                if (o.microWalletAddress) {
+                    throw ('You listed both microWalletAddress and walletAddress. Please choose one or the other.');
+                }
+                if (o.lumenBoxAddress) {
+                    throw ('You listed both lumenBoxAddress and walletAddress. Please choose one or the other.');
+                }
             }
-            if (o.federatedAddress) {
-                if (/.*\*.*/.test(o.federatedAddress)) {
-                    self.address = o.federatedAddress;
+            if (o.microWalletAddress && o.lumenBoxAddress) {
+                throw ('You listed both lumenBoxAddress and microWalletAddress. Please choose one or the other.')
+            }
+            if (o.microWalletAddress) {
+                if (/.*\*micro-wallet.com/.test(o.microWalletAddress)) {
+                    self.address = o.microWalletAddress;
                     self.usingFederatedAddress = true;
                 } else {
-                    throw ('invalid federatedServerAddress. Please consult the documentation.')
+                    throw ('invalid microWalletAddress. Please consult the documentation.')
+                }
+            } else if (o.lumenBoxAddress) {
+                if (/.*\*lumenbox.org/.test(o.lumenBoxAddress)) {
+                    self.address = o.lumenBoxAddress;
+                    self.usingFederatedAddress = true;
+                } else {
+                    throw ('invalid microWalletAddress. Please consult the documentation.')
                 }
             } else {
                 if (!o.walletAddress) {
-                    throw ('Missing walletAddress. Please consult the documentation.')
+                    throw ('Missing wallet address. Please consult the documentation.')
                 }
                 self.address = o.walletAddress;
             }
@@ -52,25 +67,37 @@
             self._setHtml().then(function() {
                 self._setCss();
                 self._setJs();
-                self._fetchStellarData()
+                self._fetchStellarData().then(function(url) {
+                    $.get(url, function(data) {
+                        var records = data._embedded.records;
+                        if (records.length) {
+                            $(`${self.idTarget} .stw-audio-player-container .num-supporters`).html(records.length);
+                            var lumenAmount = parseInt(records.reduce(function(sum, each) {
+                                return sum + each.amount
+                            }, 0), 10);
+                            $.get(`https://api.coinmarketcap.com/v2/ticker/512/?convert=USD`, function(_data) {
+                                $(`${self.idTarget} .stw-audio-player-container .dollar-value`).html((_data.data.quotes.USD.price * lumenAmount).toFixed(2));
+                            });
+                        }
+                    });
+                })
             });
         },
 
         _fetchStellarData: function() {
             var self = this;
-            var url = `https://api.stellar.expert/api/explorer/public/payments?to=${self.address}&limit=100&memo=${self.memo}`;
-            $.get(url, function(data) {
-                var records = data._embedded.records;
-                if (records.length) {
-                    $(`${self.idTarget} .stw-audio-player-container .num-supporters`).html(records.length);
-                    var lumenAmount = parseInt(records.reduce(function(sum, each) {
-                        return sum + each.amount
-                    }, 0), 10);
-                    $.get(`https://api.coinmarketcap.com/v2/ticker/512/?convert=USD`, function(_data) {
-                        $(`${self.idTarget} .stw-audio-player-container .dollar-value`).html((_data.data.quotes.USD.price * lumenAmount).toFixed(2));
+            return new Promise(function(resolve) {
+                if (self.usingFederatedAddress) {
+                    var lumenBoxUrl = `https://lumenbox.org/verify/${self.address}`;
+                    $.get(lumenBoxUrl, function(data) {
+                        var publicKey = data.record.account_id;
+                        var memo = data.record.memo;
+                        resolve(`https://api.stellar.expert/api/explorer/public/payments?to=${publicKey}&limit=100&memo=${memo}`);
                     });
+                } else {
+                    resolve(`https://api.stellar.expert/api/explorer/public/payments?to=${self.address}&limit=100&memo=${self.memo}`);
                 }
-            });
+            })
         },
 
         _setHtml: function() {

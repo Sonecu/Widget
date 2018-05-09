@@ -3,21 +3,19 @@ new AudioPlayer(
         tracks: [
             {
                 url: 'https://dl.dropbox.com/s/cv0gaegc6smd642/fantasia_TMP.mp3?dl=0',
-                name: 'Castillo en la niebla'
+                name: 'Fantasia'
             },
             {
                 url: 'https://dl.dropbox.com/s/qf1l478n8awdapu/pavilions.mp3?dl=0',
-                name: 'Dawggss'
+                name: 'Pavilions'
             }
         ],
-        songName: 'Castillo en la niebla',
         by: 'Alexander Leon',
-        federatedAddress: 'bill@music*lumenbox.com',
+        walletAddress: 'GA5JWS65L22GL5EJROI7NDRPJUPY4TFEKSRDPO2DKLA7MJXRJSTDNKRN',
         memo: 'f',
         idTarget: 'hello',
         albumName: 'Castillo en la niebla (2016)',
-        message: 'Thanks!',
-        type: 'album'
+        message: 'Thanks!'
     });
 
 new AudioPlayer(
@@ -33,9 +31,8 @@ new AudioPlayer(
             }
         ],
         useAlbumDisplay: true,
-        songName: 'Castillo en la niebla',
         by: 'Alexander Leon',
-        walletAddress: 'test@music*lumenbox.org',
+        lumenBoxAddress: 'test@music*lumenbox.org',
         albumName: 'Castillo en la niebla (2016)',
         idTarget: 'dawg',
         message: 'Thanks!'
