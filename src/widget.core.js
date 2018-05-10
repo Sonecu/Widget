@@ -135,11 +135,11 @@
                         "<div class='num-supporters'>0</div>&nbsp; | $<span class='dollar-value'>0.00</span></div>" +
                         "<div class='support'>Support</div>" +
                         "<div class='back'>Back</div>" +
-                        "<div class='tw-link'>TW</div>" +
+                        "<a href='http://sonecu.org' class='tw-link' target='_blank'>TW</a>" +
                         "</div>" +
                         "</div>" +
                         "<div class='content-bottom-support'>" +
-                        "<div class='support-label'>Stellar (XLM) Address: <span class='learn'>Learn</span></div><div class='address-value copyable-area'>" + self.address + "</div>" +
+                        "<div class='support-label'>Stellar (XLM) Address: <a href='http://sonecu.org' target='_blank' class='learn'>Learn</a></div><div class='address-value copyable-area'>" + self.address + "</div>" +
                         self._memoHtml() +
                         "</div>" +
                         "<div class='content-bottom'>" +
@@ -276,7 +276,8 @@
                 'font-weight': '500',
                 'color': '#35518d',
                 'cursor': 'pointer',
-                'user-select': 'all'
+                'user-select': 'all',
+                'text-decoration': 'none'
             })
 
             $(`${self.idTarget} .stw-audio-player-container .image`).css({
@@ -443,7 +444,9 @@
             });
 
             $(`${self.idTarget} .stw-audio-player-container .tw-link`).css({
-                'color': '#333'
+                'color': '#333',
+                'text-decoration': 'none',
+                'font-weight': '500'
             })
 
             $(`${self.idTarget} .stw-audio-player-container .tip`).css({
